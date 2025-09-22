@@ -1,4 +1,4 @@
-n=int(input())
+n=int(input(''))
 tr=0
 fl=0
 for i in range(n):
