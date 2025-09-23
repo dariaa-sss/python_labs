@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc65a56e-f36b-4a64-af48-4940673b817b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/images/img01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/img02.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/img03.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/img04.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/img05.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lab01/05_initials_and_len.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lab01/05_initials_and_len.py" afterDir="false" />
-    </list>
+    <list default="true" id="fc65a56e-f36b-4a64-af48-4940673b817b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
