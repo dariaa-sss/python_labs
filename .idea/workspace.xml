@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fc65a56e-f36b-4a64-af48-4940673b817b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/images/img01.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/img02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/img03.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/img04.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/img05.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lab01/05_initials_and_len.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lab01/05_initials_and_len.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="32rkaZZMkUeD79vTAxDK6KYtKcx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.01_greeting.executor&quot;: &quot;Run&quot;,
+    &quot;Python.02_sum_avg.executor&quot;: &quot;Run&quot;,
+    &quot;Python.03_discount_vat.executor&quot;: &quot;Run&quot;,
+    &quot;Python.04_minutes_to_hhmm.executor&quot;: &quot;Run&quot;,
+    &quot;Python.05_initials_and_len.executor&quot;: &quot;Run&quot;,
+    &quot;Python.06.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/dariella/Desktop/python_labs&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-ce6832f46686-7b97d883f26b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.25557.178" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fc65a56e-f36b-4a64-af48-4940673b817b" name="Changes" comment="" />
+      <created>1758186142634</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1758186142634</updated>
+    </task>
+    <servers />
+  </component>
+</project>

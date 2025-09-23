@@ -1,4 +1,4 @@
-name=input("ФИО: ")
+name=input("ФИО: ").strip()
 inc=''
 for i in name.split():
     inc+=(i)[0]
