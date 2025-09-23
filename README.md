@@ -15,7 +15,7 @@ avg=sum/2
 print(f'sum={sum:.2f},avg={avg:.2f}')
 
 ```
-![img01!](./images/img02.png)
+![img01!](./images/lab01/img02.png)
 ## Задание 3
 
 ``` price=float(input('цена'))
