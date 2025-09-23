@@ -39,7 +39,8 @@ print(f'{hour}:{mins}')
 ![img01!](./images/img04.png)
 ## Задание 5
 
-``` name=input("ФИО: ")
+```name=input("ФИО: ").strip()
+name=input("ФИО: ")
 inc=''
 for i in name.split():
     inc+=(i)[0]
