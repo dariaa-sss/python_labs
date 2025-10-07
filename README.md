@@ -58,7 +58,8 @@ print(f'Длина строки: {len_name-1}')
 # Лабораторная работа 2
 ## Задание 1
 
-```from  itertools import *
+```
+from  itertools import *
 def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
     if not nums:
         raise ValueError('ValueError')
@@ -83,7 +84,8 @@ print(flatten([[1,4,1,1],[-6,-6,0.8]]))
 ![img01!](./images/lab02/img01.png)
 ## Задание B
 
-``` def transpose(mat: list[list[float | int]]) -> list[list]:
+```
+def transpose(mat: list[list[float | int]]) -> list[list]:
     if len(mat)>1:
         for lines in range(1,len(mat)):
             if len(mat[0])!=len(mat[lines]):
@@ -124,7 +126,8 @@ print(col_sums([[1, 2, 3], [4, 5, 6]]))
 ![img01!](./images/lab02/img02.png)
 ## Задание C
 
-``` def format_record(rec: tuple[str, str, float]) -> str:
+```
+def format_record(rec: tuple[str, str, float]) -> str:
 
     for date in range(len(rec)):
         if len(str(rec[date])) == 0:
