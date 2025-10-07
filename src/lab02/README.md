@@ -23,7 +23,7 @@ print(min_max([1.5, 2, 2.0, -3.1]))
 print(unique_sorted([1,4,1,1,-6,-6,0.8]))
 print(flatten([[1,4,1,1],[-6,-6,0.8]]))
 ```
-![img01!](python_labs/images/lab02/img01.png)
+![img01!](./images/lab02/img01.png)
 ## Задание B
 
 ``` def transpose(mat: list[list[float | int]]) -> list[list]:
