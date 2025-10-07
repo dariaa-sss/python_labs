@@ -23,7 +23,7 @@ print(min_max([1.5, 2, 2.0, -3.1]))
 print(unique_sorted([1,4,1,1,-6,-6,0.8]))
 print(flatten([[1,4,1,1],[-6,-6,0.8]]))
 ```
-![img01!](python_labs/images/lab02/img01.png)
+![img01!](python_labs/lab02/images/lab02/img01.png)
 ## Задание B
 
 ``` def transpose(mat: list[list[float | int]]) -> list[list]:
@@ -64,7 +64,7 @@ def col_sums(mat: list[list[float | int]]) -> list[float]:
 print(col_sums([[1, 2, 3], [4, 5, 6]]))
 
 ```
-![img01!](python_labs/images/lab02/img02.png)
+![img01!](python_labs/lab02/images/lab02/img02.png)
 ## Задание C
 
 ``` def format_record(rec: tuple[str, str, float]) -> str:
@@ -87,4 +87,4 @@ print(col_sums([[1, 2, 3], [4, 5, 6]]))
 
 print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
 ```
-![img01!](python_labs/images/lab02/img03.png)
+![img01!](python_labs/lab02/images/lab02/img03.png)
