@@ -130,7 +130,7 @@ print(col_sums([[1, 2, 3], [4, 5, 6]]))
 def format_record(rec: tuple[str, str, float]) -> str:
 
     for date in range(len(rec)):
-        if len(str(rec[date])) == 0:
+        if len(str(rec[date])) == 0 or len(rec)!=3:
             raise 'ValueError'
     fin_name=[]
     for inc in rec[0].split():
