@@ -1,4 +1,3 @@
-from typing import Union
 def transpose(mat: list[list[float | int]]) -> list[list]:
     if len(mat)>1:
         for lines in range(1,len(mat)):
@@ -7,6 +6,7 @@ def transpose(mat: list[list[float | int]]) -> list[list]:
             else: ans = [list(row) for row in zip(*mat)]
     else: ans = [list(row) for row in zip(*mat)]
     return ans
+print(transpose([[1, 2, 3]] ))
 
 def row_sums(mat: list[list[float | int]]) -> list[float]:
     ans=[]
@@ -18,6 +18,7 @@ def row_sums(mat: list[list[float | int]]) -> list[float]:
                 for lines in range(len(mat)):
                     ans.append(sum(mat[lines]))
     return ans
+print(row_sums([[-1, 1], [10, -10]]))
 
 def col_sums(mat: list[list[float | int]]) -> list[float]:
     ans=[]
@@ -32,7 +33,4 @@ def col_sums(mat: list[list[float | int]]) -> list[float]:
         ans.append(sum)
     return ans
 
-
-print(transpose([[1, 2, 3]] ))
-print(row_sums([[-1, 1], [10, -10]]))
 print(col_sums([[1, 2, 3], [4, 5, 6]]))

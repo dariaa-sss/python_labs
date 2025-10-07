@@ -1,7 +1,4 @@
-from typing import Union
 from  itertools import *
-
-Number = Union[int, float]
 def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
     if not nums:
         raise ValueError('ValueError')
@@ -19,6 +16,6 @@ def flatten(mat: list[list | tuple]) -> list:
     return list(chain(*mat))
 
 
-print(min_max([1,4,-6,0.8]))
+print(min_max([1.5, 2, 2.0, -3.1]))
 print(unique_sorted([1,4,1,1,-6,-6,0.8]))
 print(flatten([[1,4,1,1],[-6,-6,0.8]]))
