@@ -71,7 +71,7 @@ def  unique_sorted(nums: list[float | int]) -> list[float | int]:
 def flatten(mat: list[list | tuple]) -> list:
     for i in mat:
         if type(i) == str:
-            return print('TypeError')
+            return TypeError('TypeError')
         if len(i)==0:
             del(i)
     return list(chain(*mat))
