@@ -6,7 +6,7 @@ def transpose(mat: list[list[float | int]]) -> list[list]:
             else: ans = [list(row) for row in zip(*mat)]
     else: ans = [list(row) for row in zip(*mat)]
     return ans
-print(transpose([[1, 2, 3]] ))
+print(transpose([[1, 2], [3]] ))
 
 def row_sums(mat: list[list[float | int]]) -> list[float]:
     ans=[]
