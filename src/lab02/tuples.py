@@ -1,7 +1,7 @@
 def format_record(rec: tuple[str, str, float]) -> str:
 
     for date in range(len(rec)):
-        if len(str(rec[date])) == 0:
+        if len(str(rec[date])) == 0 or len(rec)!=3:
             raise 'ValueError'
     fin_name=[]
     for inc in rec[0].split():
@@ -16,7 +16,7 @@ def format_record(rec: tuple[str, str, float]) -> str:
     group=rec[1].strip()
     return f'{fin_name_st+ sur_name_st}, гр. {group}, GPA {gpa:.2f}'
 
-print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
+print(format_record(("  сидорова  анна   сергеевна ", "   ABB-01", 3.999)))
 
 
 
