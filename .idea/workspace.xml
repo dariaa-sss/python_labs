@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fc65a56e-f36b-4a64-af48-4940673b817b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/lib/text.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lab03/text_stats.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/text.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/text.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +47,7 @@
     "Python.arrays.executor": "Run",
     "Python.matrix.executor": "Run",
     "Python.text.executor": "Run",
+    "Python.text_stats.executor": "Run",
     "Python.tuples.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
