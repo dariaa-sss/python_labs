@@ -71,7 +71,7 @@ def  unique_sorted(nums: list[float | int]) -> list[float | int]:
 def flatten(mat: list[list | tuple]) -> list:
     for i in mat:
         if type(i) == str:
-            return print('TypeError')
+            return TypeError('TypeError')
         if len(i)==0:
             del(i)
     return list(chain(*mat))
@@ -130,7 +130,7 @@ print(col_sums([[1, 2, 3], [4, 5, 6]]))
 def format_record(rec: tuple[str, str, float]) -> str:
 
     for date in range(len(rec)):
-        if len(str(rec[date])) == 0:
+        if len(str(rec[date])) == 0 or len(rec)!=3:
             raise 'ValueError'
     fin_name=[]
     for inc in rec[0].split():
