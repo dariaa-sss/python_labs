@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fc65a56e-f36b-4a64-af48-4940673b817b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lab04/io_txt_csv.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lab04/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lab04/text_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/text.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/text.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +40,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python tests.Doctests in io_txt_csv.executor": "Run",
     "Python.01_greeting.executor": "Run",
     "Python.02_sum_avg.executor": "Run",
     "Python.03_discount_vat.executor": "Run",
@@ -43,14 +48,17 @@
     "Python.05_initials_and_len.executor": "Run",
     "Python.06.executor": "Run",
     "Python.arrays.executor": "Run",
+    "Python.io_txt_csv.executor": "Run",
     "Python.matrix.executor": "Run",
+    "Python.tests.executor": "Run",
     "Python.text.executor": "Run",
+    "Python.text_report.executor": "Run",
     "Python.text_stats.executor": "Run",
     "Python.tuples.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/dariella/Desktop/python_labs/src"
   }
 }]]></component>
