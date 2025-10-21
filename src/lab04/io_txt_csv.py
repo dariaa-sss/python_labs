@@ -21,7 +21,8 @@ def write_csv(rows: Iterable[Sequence], path: str | Path,
               header: tuple[str, ...] | None = None) -> None:
     p = Path(path)
     rows = list(rows)
-
+    if len(rows) == 0:
+        header=("a","b")
     with p.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         if rows:
