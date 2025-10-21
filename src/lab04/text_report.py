@@ -1,7 +1,7 @@
 import sys
 import os
 
-from src.lib.text import top_n
+
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'lib'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
