@@ -55,8 +55,8 @@ def sorted_word_counts(freq: dict[str, int]) -> list[tuple[str, int]]:
     return sorted(freq.items(), key=lambda kv: (-kv[1], kv[0]))
 
 ```
-![img01!](./images/lab04/img01.png)
-![img01!](./images/lab04/img03.png)
+![img01!](/images/lab04/img01.png)
+![img01!](/images/lab04/img03.png)
 ## Задание B
 
 ```
@@ -86,6 +86,6 @@ for world,count in top[:5]:
      print(f'{world}: {count}')
 
 ```
-![img01!](./images/lab04/img03.png)
+![img03!](/images/lab04/img03.png)
 
-![img01!](./images/lab04/img02.png)
+![img02!](/images/lab04/img02.png)
