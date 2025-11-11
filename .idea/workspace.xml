@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc65a56e-f36b-4a64-af48-4940673b817b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/lab05/out/test_from_csv.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/data/lab05/out/test_from_csv.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lab05/csv_xlsx.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lab05/csv_xlsx.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lab05/json_csv.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lab05/json_csv.py" afterDir="false" />
-    </list>
+    <list default="true" id="fc65a56e-f36b-4a64-af48-4940673b817b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,7 +57,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/dariella/Desktop/python_labs/src"
   }
 }]]></component>
