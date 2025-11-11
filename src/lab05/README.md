@@ -85,7 +85,7 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
 csv_to_xlsx("/Users/dariella/Desktop/python_labs/data/lab05/samples/cities.csv","/Users/dariella/Desktop/python_labs/data/lab05/out/test_from_csv.xlsx")
 
 ```
-![img01!](./images/lab05/img03.png)
+![img01!](.python_labs/images/lab05/img03.png)
 
 
 
