@@ -1,90 +1,91 @@
-
-# Лабораторная работа 4 
+# Лабораторная работа 5 
 ## Цель работы
-закрепить работу с файлами (чтение/запись, кодировки), автоматизировать сбор статистики по словам и выгружать её в CSV.
+Разобраться с форматом JSON, сериализацией/десериализацией и табличными конвертациями.
 
 ## Задание A
 
 ``` 
 from pathlib import Path
-import csv
-from typing import Iterable, Sequence
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'lib'))
-from text import normalize, tokenize
-def read_text(path: str | Path, encoding: str = "utf-8") -> str:
-    path = Path(path)
-    try:
-         open(path, encoding=encoding)
-    except UnicodeDecodeError:
-        print("UnicodeDecodeError")
-    except FileNotFoundError:
-        print("FileNotFoundError")
-    return path.read_text(encoding=encoding)
-    
+import json, csv
 
-def write_csv(rows: Iterable[Sequence], path: str | Path,
-              header: tuple[str, ...] | None = None) -> None:
-    p = Path(path)
-    rows = list(rows)
-    if len(rows) == 0:
-        header=("a","b")
+def json_to_csv(json_path: str, csv_path: str) -> None:
+    path = Path(json_path)
+    if not path.exists():
+        raise FileNotFoundError("FileNotFoundError")
+    with path.open(encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, list) or not all(isinstance(i, dict) for i in data):
+        raise ValueError("ValueError")
+    output = Path(csv_path)
+    with output.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=data[0].keys()) #возвращает порядок ключей из первого словаря.
+        writer.writeheader()
+        writer.writerows(data)
 
-    with p.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        if rows:
-            first_len = len(rows[0])
-            for i, row in enumerate(rows):
-                if len(row) != first_len:
-                    raise ValueError
-        if header is not None:
-            w.writerow(header)
-        for r in rows:
-            w.writerow(r)
 
-from collections import Counter
+json_to_csv("/Users/dariella/Desktop/python_labs/data/lab05/samples/test.json","/Users/dariella/Desktop/python_labs/data/lab05/out/people_from_json.csv")
 
-def frequencies_from_text(text: str) -> dict[str, int]:
-    from lib.text import normalize, tokenize  # из ЛР3
-    tokens = tokenize(normalize(text))
-    return Counter(tokens)  # dict-like
+def csv_to_json(csv_path: str, json_path: str) -> None:
+    path = Path(csv_path)
+    if not path.exists():
+        raise FileNotFoundError("FileNotFoundError")
+    with path.open(encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        data = list(reader)
 
-def sorted_word_counts(freq: dict[str, int]) -> list[tuple[str, int]]:
-    return sorted(freq.items(), key=lambda kv: (-kv[1], kv[0]))
+    output = Path(json_path)
+
+    with output.open("w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+csv_to_json('/Users/dariella/Desktop/python_labs/data/lab05/samples/test.csv', "/Users/dariella/Desktop/python_labs/data/lab05/out/test_from_csv.json")
+
 
 ```
-![img01!](/images/lab04/img01.png)
-![img01!](/images/lab04/img03.png)
+![img01!](./images/lab05/img01.png)
+![img01!](./images/lab05/img02.png)
 ## Задание B
 
 ```
-import sys
-import os
+from openpyxl import Workbook
+import csv
+from pathlib import Path
 
-from src.lib.text import top_n
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
+    if not csv_path.lower().endswith(".csv"):
+        raise ValueError("ValueError")
+    if not xlsx_path.lower().endswith(".xlsx"):
+        raise ValueError("ValueError")
+    path = Path(csv_path)
+    if not path.exists():
+        raise FileNotFoundError("FileNotFoundError")
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Sheet1"
+    rows_added = 0
+    try:
+        with path.open(encoding="utf-8") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                ws.append(row)
+                rows_added += 1
+    except UnicodeDecodeError:
+        raise ValueError("ValueError")
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'lib'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from io_txt_csv import read_text, write_csv, frequencies_from_text
-from text import normalize, top_n,tokenize, count_freq
-
-txt = read_text("/Users/dariella/Desktop/python_labs/data/lab04/test.txt")
-norm=normalize(txt)
-token=tokenize(norm)
-counts=count_freq(token)
-top=top_n(counts)
+    if rows_added == 0:
+        raise ValueError("ValueError")
 
 
-write_csv( top, "/Users/dariella/Desktop/python_labs/data/lab04/check2.csv",header=("word", "count"))
+    output = Path(xlsx_path)
 
-print(f"Всего слов: {len(token)}")
-print(f'Уникальных слов:{len(counts)}')
-print('Топ-5:')
-for world,count in top[:5]:
-     print(f'{world}: {count}')
+
+    wb.save(output)
+
+
+csv_to_xlsx("/Users/dariella/Desktop/python_labs/data/lab05/samples/cities.csv","/Users/dariella/Desktop/python_labs/data/lab05/out/test_from_csv.xlsx")
 
 ```
-![img03!](/images/lab04/img03.png)
+![img01!](./images/lab05/img03.png)
 
-![img02!](/images/lab04/img02.png)
+
+
