@@ -345,7 +345,7 @@ csv_to_json('/Users/dariella/Desktop/python_labs/data/lab05/samples/test.csv', "
 ![img01!](./images/lab05/img02.png)
 ## Задание B
 
-```
+```python
 from openpyxl import Workbook
 import csv
 from pathlib import Path
