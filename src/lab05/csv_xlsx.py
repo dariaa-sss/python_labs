@@ -28,7 +28,7 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
 
 
     output = Path(xlsx_path)
-    output.parent.mkdir(parents=True, exist_ok=True)
+
 
     wb.save(output)
 
