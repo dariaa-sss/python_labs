@@ -303,11 +303,15 @@ for world,count in top[:5]:
 
 ## Задание A
 
-``` 
+```python
 from pathlib import Path
 import json, csv
 
 def json_to_csv(json_path: str, csv_path: str) -> None:
+    if not json_path.lower().endswith(".json"):
+        raise ValueError("ValueError")
+    if not csv_path.lower().endswith(".csv"):
+        raise ValueError("ValueError")
     path = Path(json_path)
     if not path.exists():
         raise FileNotFoundError("FileNotFoundError")
@@ -322,9 +326,13 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
         writer.writerows(data)
 
 
-json_to_csv("/Users/dariella/Desktop/python_labs/data/lab05/samples/test.json","/Users/dariella/Desktop/python_labs/data/lab05/out/people_from_json.csv")
+json_to_csv("/Users/dariella/Desktop/python_labs/data/lab05/samples/test.json","/Users/dariella/Desktop/python_labs/data/lab05/out/rr.csv")
 
 def csv_to_json(csv_path: str, json_path: str) -> None:
+    if not json_path.lower().endswith(".json"):
+        raise ValueError("ValueError")
+    if not csv_path.lower().endswith(".csv"):
+        raise ValueError("ValueError")
     path = Path(csv_path)
     if not path.exists():
         raise FileNotFoundError("FileNotFoundError")
