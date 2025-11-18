@@ -407,14 +407,14 @@ from pathlib import Path
 import sys
 import os
 
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 from text import tokenize, count_freq, top_n
 
-def command_cat(path: Path, number_lines: bool):
-    if not path.exists():
-        raise FileNotFoundError(f"Файл не найден: {path}")
 
+def command_cat(path: Path, number_lines: bool):
+    """Вывод файла построчно."""
     with path.open("r", encoding="utf-8") as f:
         for i, line in enumerate(f, 1):
             line = line.rstrip("\n")
@@ -425,11 +425,8 @@ def command_cat(path: Path, number_lines: bool):
 
 
 def command_stats(path: Path, top_n_value: int):
-    if not path.exists():
-        raise FileNotFoundError(f"Файл не найден: {path}")
-
+    """Анализ частот слов."""
     text = path.read_text(encoding="utf-8")
-
     tokens = tokenize(text)
     freq = count_freq(tokens)
     top = top_n(freq, top_n_value)
@@ -443,32 +440,45 @@ def command_stats(path: Path, top_n_value: int):
 
 def main():
     parser = argparse.ArgumentParser(description="CLI-утилиты лабораторной №6")
-    subparsers = parser.add_subparsers(dest="command")
+    subparsers = parser.add_subparsers(dest="command", help="Подкоманда (cat или stats)")
 
     # cat
     cat_parser = subparsers.add_parser("cat", help="Вывести содержимое файла")
-    cat_parser.add_argument("--input", required=True)
+    cat_parser.add_argument("--input", required=True, help="Путь к файлу")
     cat_parser.add_argument("-n", action="store_true", help="Нумеровать строки")
 
-    # stats 
+    # stats
     stats_parser = subparsers.add_parser("stats", help="Частоты слов")
-    stats_parser.add_argument("--input", required=True)
-    stats_parser.add_argument("--top", type=int, default=5)
+    stats_parser.add_argument("--input", required=True, help="Путь к текстовому файлу")
+    stats_parser.add_argument("--top", type=int, default=5, help="Кол-во топ слов (положительное число)")
 
     args = parser.parse_args()
 
+  
+    if args.command is None:
+        parser.error("Не указана подкоманда. Используйте одну из: cat, stats")
+
+    
+    input_path = Path(args.input)
+    if not input_path.exists():
+        parser.error(f"Входной файл не найден: {args.input}")
+
     if args.command == "cat":
-        command_cat(Path(args.input), args.n)
+        command_cat(input_path, args.n)
 
     elif args.command == "stats":
-        command_stats(Path(args.input), args.top)
+        if args.top is None or args.top <= 0:
+            parser.error("--top должно быть положительным целым числом")
+        command_stats(input_path, args.top)
 
     else:
-        parser.print_help()
+        parser.error(f"Неизвестная команда: {args.command}")
 
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
@@ -479,45 +489,69 @@ if __name__ == "__main__":
 
 ```python
 import argparse
-
+from pathlib import Path
 
 from src.lab05.json_csv import json_to_csv, csv_to_json
 from src.lab05.csv_xlsx import csv_to_xlsx
+
+
+def validate_input_file(path: str, parser, expected_ext: str):
+    p = Path(path)
+    if not p.exists():
+        parser.error(f"Файл не найден: {path}")
+
+    if not p.suffix.lower() == expected_ext:
+        parser.error(f"Ожидался файл формата {expected_ext}, получено: {p.suffix}")
+
+    return p
 
 
 def main():
     parser = argparse.ArgumentParser(description="Конвертеры данных")
     sub = parser.add_subparsers(dest="cmd")
 
-    p1 = sub.add_parser("json2csv")
+    # json → csv
+    p1 = sub.add_parser("json2csv", help="Конвертация JSON → CSV")
     p1.add_argument("--in", dest="input", required=True)
     p1.add_argument("--out", dest="output", required=True)
 
-    p2 = sub.add_parser("csv2json")
+    # csv → json
+    p2 = sub.add_parser("csv2json", help="Конвертация CSV → JSON")
     p2.add_argument("--in", dest="input", required=True)
     p2.add_argument("--out", dest="output", required=True)
 
-    p3 = sub.add_parser("csv2xlsx")
+    # csv → xlsx
+    p3 = sub.add_parser("csv2xlsx", help="Конвертация CSV → XLSX")
     p3.add_argument("--in", dest="input", required=True)
     p3.add_argument("--out", dest="output", required=True)
 
     args = parser.parse_args()
 
+    if args.cmd is None:
+        parser.error("Не указана команда. Используйте: json2csv, csv2json, csv2xlsx")
+
     if args.cmd == "json2csv":
+        validate_input_file(args.input, parser, ".json")
         json_to_csv(args.input, args.output)
         print(f"Готово: {args.output}")
 
     elif args.cmd == "csv2json":
+        validate_input_file(args.input, parser, ".csv")
         csv_to_json(args.input, args.output)
         print(f"Готово: {args.output}")
 
     elif args.cmd == "csv2xlsx":
+        validate_input_file(args.input, parser, ".csv")
         csv_to_xlsx(args.input, args.output)
         print(f"Готово: {args.output}")
 
+    else:
+        parser.error(f"Неизвестная команда: {args.cmd}")
+
 
 if __name__ == "__main__":
-    main()git
+    main()
+
 
 ```
 ![img01!](./images/lab06/img02.png)
