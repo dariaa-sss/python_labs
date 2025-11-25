@@ -4,7 +4,7 @@ import sys
 import os
 
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'lib'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "lib"))
 
 from text import tokenize, count_freq, top_n
 
@@ -36,7 +36,9 @@ def command_stats(path: Path, top_n_value: int):
 
 def main():
     parser = argparse.ArgumentParser(description="CLI-утилиты лабораторной №6")
-    subparsers = parser.add_subparsers(dest="command", help="Подкоманда (cat или stats)")
+    subparsers = parser.add_subparsers(
+        dest="command", help="Подкоманда (cat или stats)"
+    )
 
     # cat
     cat_parser = subparsers.add_parser("cat", help="Вывести содержимое файла")
@@ -46,15 +48,15 @@ def main():
     # stats
     stats_parser = subparsers.add_parser("stats", help="Частоты слов")
     stats_parser.add_argument("--input", required=True, help="Путь к текстовому файлу")
-    stats_parser.add_argument("--top", type=int, default=5, help="Кол-во топ слов (положительное число)")
+    stats_parser.add_argument(
+        "--top", type=int, default=5, help="Кол-во топ слов (положительное число)"
+    )
 
     args = parser.parse_args()
 
-  
     if args.command is None:
         parser.error("Не указана подкоманда. Используйте одну из: cat, stats")
 
-    
     input_path = Path(args.input)
     if not input_path.exists():
         parser.error(f"Входной файл не найден: {args.input}")
@@ -73,4 +75,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

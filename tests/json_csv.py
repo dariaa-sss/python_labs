@@ -30,7 +30,7 @@ def test_json_to_csv_invalid_json_types(tmp_path, filename, content):
         "nonexistent.json",
         "missing.json",
         "not_here.json",
-        "subdir/nested_missing.json",  # относительный путь с поддиректорией
+        "subdir/nested_missing.json",  
     ],
 )
 def test_json_to_csv_file_not_found(tmp_path, filename):
@@ -66,9 +66,9 @@ def test_json_to_csv_malformed_json(tmp_path, filename, content):
 @pytest.mark.parametrize(
     "filename, content",
     [
-        ("empty.csv", ""),  # полностью пустой файл
-        ("whitespace.csv", "   "),  # только пробелы
-        ("only_newlines.csv", "\n\n\n"),  # только переносы строк
+        ("empty.csv", ""), 
+        ("whitespace.csv", "   "),  
+        ("only_newlines.csv", "\n\n\n"),  
     ],
 )
 def test_csv_to_json_empty_or_invalid_csv(tmp_path, filename, content):
@@ -87,7 +87,7 @@ def test_csv_to_json_empty_or_invalid_csv(tmp_path, filename, content):
         "nonexistent.csv",
         "missing.csv",
         "not_found.csv",
-        "data/subdir/missing.csv",  # относительный путь с поддиректорией
+        "data/subdir/missing.csv", 
     ],
 )
 def test_csv_to_json_file_not_found(tmp_path, filename):
@@ -162,27 +162,27 @@ def test_both_functions_empty_paths(func, input_ext, tmp_path):
 )
 def test_both_functions_relative_paths(tmp_path, func, input_ext, output_ext):
     """Проверка работы с относительными путями"""
-    # Создаем поддиректорию
+ 
     subdir = tmp_path / "data"
     subdir.mkdir()
 
     src = subdir / f"test.{input_ext}"
     dst = subdir / f"output.{output_ext}"
 
-    # Создаем валидные данные
+
     if input_ext == "json":
         src.write_text('[{"name": "Test"}]', encoding="utf-8")
     else:
         src.write_text("name\nTest", encoding="utf-8")
 
-    # Используем относительные пути
+
     relative_src = Path("data") / f"test.{input_ext}"
     relative_dst = Path("data") / f"output.{output_ext}"
 
-    # Должны работать с относительными путями
+
     func(str(relative_src), str(relative_dst))
 
-    # Проверяем что файл создался
+    
     assert dst.exists()
 
 
@@ -198,7 +198,7 @@ def test_both_functions_utf8_encoding(tmp_path, func, input_ext):
     src = tmp_path / f"utf8_test.{input_ext}"
     dst = tmp_path / f"output.{'csv' if input_ext == 'json' else 'json'}"
 
-    # Данные с UTF-8 символами
+
     if input_ext == "json":
         content = '[{"name": "Алиса 😀", "city": "Москва"}]'
     else:
@@ -206,12 +206,15 @@ def test_both_functions_utf8_encoding(tmp_path, func, input_ext):
 
     src.write_text(content, encoding="utf-8")
 
-    # Должен работать без ошибок кодировки
+    
     func(str(src), str(dst))
 
-    # Проверяем что выходной файл создан
+
     assert dst.exists()
 
-    # Проверяем что данные сохранились корректно
+
     output_content = dst.read_text(encoding="utf-8")
+
+    assert "Алиса" in output_content
+
     assert "Алиса" in output_content
