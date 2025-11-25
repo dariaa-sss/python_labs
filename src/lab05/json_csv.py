@@ -1,6 +1,7 @@
 from pathlib import Path
 import json, csv
 
+
 def json_to_csv(json_path: str, csv_path: str) -> None:
     if not json_path.lower().endswith(".json"):
         raise ValueError("ValueError")
@@ -15,12 +16,18 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
         raise ValueError("ValueError")
     output = Path(csv_path)
     with output.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=data[0].keys()) #возвращает порядок ключей из первого словаря.
+        writer = csv.DictWriter(
+            f, fieldnames=data[0].keys()
+        )  # возвращает порядок ключей из первого словаря.
         writer.writeheader()
         writer.writerows(data)
 
 
-json_to_csv("/Users/dariella/Desktop/python_labs/data/lab05/samples/test.json","/Users/dariella/Desktop/python_labs/data/lab05/out/rr.csv")
+json_to_csv(
+    "/Users/dariella/Desktop/python_labs/data/lab05/samples/test.json",
+    "/Users/dariella/Desktop/python_labs/data/lab05/out/rr.csv",
+)
+
 
 def csv_to_json(csv_path: str, json_path: str) -> None:
     if not json_path.lower().endswith(".json"):
@@ -39,4 +46,8 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
     with output.open("w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-csv_to_json('/Users/dariella/Desktop/python_labs/data/lab05/samples/test.csv', "/Users/dariella/Desktop/python_labs/data/lab05/out/test_from_csv.json")
+
+csv_to_json(
+    "/Users/dariella/Desktop/python_labs/data/lab05/samples/test.csv",
+    "/Users/dariella/Desktop/python_labs/data/lab05/out/test_from_csv.json",
+)

@@ -2,6 +2,7 @@ from openpyxl import Workbook
 import csv
 from pathlib import Path
 
+
 def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     if not csv_path.lower().endswith(".csv"):
         raise ValueError("ValueError")
@@ -26,11 +27,12 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     if rows_added == 0:
         raise ValueError("ValueError")
 
-
     output = Path(xlsx_path)
-
 
     wb.save(output)
 
 
-csv_to_xlsx("/Users/dariella/Desktop/python_labs/data/lab05/samples/cities.csv","/Users/dariella/Desktop/python_labs/data/lab05/out/test_from_csv.xlsx")
+csv_to_xlsx(
+    "/Users/dariella/Desktop/python_labs/data/lab05/samples/cities.csv",
+    "/Users/dariella/Desktop/python_labs/data/lab05/out/test_from_csv.xlsx",
+)

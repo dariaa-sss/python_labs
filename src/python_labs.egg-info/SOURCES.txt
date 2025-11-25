@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+src/lab05/__init__.py
+src/lab05/csv_xlsx.py
+src/lab05/json_csv.py
+src/lab06/__init__.py
+src/lab06/cli_convert.py
+src/lab06/cli_text.py
+src/lib/__init__.py
+src/lib/text.py
+src/python_labs.egg-info/PKG-INFO
+src/python_labs.egg-info/SOURCES.txt
+src/python_labs.egg-info/dependency_links.txt
+src/python_labs.egg-info/requires.txt
+src/python_labs.egg-info/top_level.txt

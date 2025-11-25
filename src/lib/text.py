@@ -1,20 +1,21 @@
 import re
 
-pattern = r'\w+(?:-\w+)*'
-def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
-    if casefold: text = text.lower()
-    if yo2e: text = text.replace("ё","е")
-    #text = re.findall(pattern, text)
-    result = re.sub(r'\s+', ' ', text).strip()
+pattern = r"\w+(?:-\w+)*"
 
+
+def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
+    if casefold:
+        text = text.lower()
+    if yo2e:
+        text = text.replace("ё", "е")
+    text = re.sub(r"\\[nrt]", " ", text)
+    result = re.sub(r"\s+", " ", text).strip()
     return result
 
 
-
 def tokenize(text: str) -> list[str]:
-    text=normalize(text)
+    text = normalize(text)
     return re.findall(pattern, text)
-
 
 
 def count_freq(tokens: list[str]) -> dict[str, int]:
@@ -25,5 +26,4 @@ def count_freq(tokens: list[str]) -> dict[str, int]:
 
 
 def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
-    return sorted(freq.items(), key=lambda x: x[1], reverse=True)[:n]
-
+    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:n]
