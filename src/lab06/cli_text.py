@@ -10,7 +10,7 @@ from text import tokenize, count_freq, top_n
 
 
 def command_cat(path: Path, number_lines: bool):
-    """Вывод файла построчно."""
+
     with path.open("r", encoding="utf-8") as f:
         for i, line in enumerate(f, 1):
             line = line.rstrip("\n")
@@ -21,7 +21,7 @@ def command_cat(path: Path, number_lines: bool):
 
 
 def command_stats(path: Path, top_n_value: int):
-    """Анализ частот слов."""
+
     text = path.read_text(encoding="utf-8")
     tokens = tokenize(text)
     freq = count_freq(tokens)

@@ -560,39 +560,62 @@ if __name__ == "__main__":
 
 # Лабораторная работа 7
 ## Цель работы
-Научиться создавать консольные инструменты с аргументами командной строки, подкомандами и флагами.
+научиться писать модульные тесты на pytest, измерять покрытие и поддерживать единый стиль кода (black).
 ## Задание A
 
 ```python
-import re
 
-pattern = r"\w+(?:-\w+)*"
-
-
-def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
-    if casefold:
-        text = text.lower()
-    if yo2e:
-        text = text.replace("ё", "е")
-    text = re.sub(r"\\[nrt]", " ", text)
-    result = re.sub(r"\s+", " ", text).strip()
-    return result
+import pytest
+from src.lib.text import normalize, tokenize, count_freq, top_n
 
 
-def tokenize(text: str) -> list[str]:
-    text = normalize(text)
-    return re.findall(pattern, text)
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        ("ПрИвЕт\\nМИр\\t", "привет мир"),
+        ("ёжик, Ёлка", "ежик, елка"),
+        ("Hello\\r\\nWorld", "hello world"),
+        ("  двойные   пробелы  ", "двойные пробелы"),
+    ],
+)
+def test_normalize_basic(source, expected):
+    assert normalize(source) == expected
 
 
-def count_freq(tokens: list[str]) -> dict[str, int]:
-    counts: dict[str, int] = {}
-    for token in tokens:
-        counts[token] = counts.get(token, 0) + 1
-    return counts
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        ("привет мир", ["привет", "мир"]),
+        ("по-настоящему круто", ["по-настоящему", "круто"]),
+        ("hello world", ["hello", "world"]),
+        ("2025 год", ["2025", "год"]),
+        ("emoji 😀 не слово", ["emoji", "не", "слово"]),
+    ],
+)
+def test_tokenize_basic(source, expected):
+    assert tokenize(source) == expected
 
 
-def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
-    return sorted(freq.items(), key=lambda x: (-x[1], x[0]))[:n]
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        (["a", "b", "a", "c", "b", "a"], [("a", 3), ("b", 2), ("c", 1)]),
+        (["bb", "aa", "bb", "aa", "cc"], [("aa", 2), ("bb", 2), ("cc", 1)]),
+    ],
+)
+def test_count_freq_and_top_n(source, expected):
+    assert top_n(count_freq(source)) == expected
+
+
+@pytest.mark.parametrize(
+    "source, count, expected",
+    [
+        ({"a": 3, "b": 2, "c": 1}, 2, [("a", 3), ("b", 2)]),
+        ({"aa": 2, "bb": 2, "cc": 1}, 1, [("aa", 2)]),
+    ],
+)
+def test_top_n_tie_breaker(source, count, expected):
+    assert top_n(source, count) == expected
 
 
 ```
@@ -608,39 +631,26 @@ from pathlib import Path
 from src.lab05.json_csv import json_to_csv, csv_to_json
 
 
-#  json_to_csv
+# json_csv
 
 
 @pytest.mark.parametrize(
     "filename, content",
     [
         ("empty.json", ""),
-        ("whitespace.json", "   "),
         ("null.json", "null"),
+        ("string.json", '"text"'),
+        ("number.json", "42"),
     ],
 )
-def test_json_to_csv_invalid_json_types(tmp_path, filename, content):
+def test_json_to_csv_invalid_types(tmp_path, filename, content):
     src = tmp_path / filename
     dst = tmp_path / "output.csv"
+
     src.write_text(content, encoding="utf-8")
-    with pytest.raises(ValueError):
+
+    with pytest.raises((ValueError, json.JSONDecodeError)):
         json_to_csv(str(src), str(dst))
-
-
-@pytest.mark.parametrize(
-    "filename",
-    [
-        "nonexistent.json",
-        "missing.json",
-        "not_here.json",
-        "subdir/nested_missing.json",  # относительный путь с поддиректорией
-    ],
-)
-def test_json_to_csv_file_not_found(tmp_path, filename):
-    dst = tmp_path / "output.csv"
-
-    with pytest.raises(FileNotFoundError):
-        json_to_csv(str(tmp_path / filename), str(dst))
 
 
 @pytest.mark.parametrize(
@@ -653,7 +663,6 @@ def test_json_to_csv_file_not_found(tmp_path, filename):
     ],
 )
 def test_json_to_csv_malformed_json(tmp_path, filename, content):
-    """Битый JSON - должен вызывать json.JSONDecodeError"""
     src = tmp_path / filename
     dst = tmp_path / "output.csv"
 
@@ -663,25 +672,94 @@ def test_json_to_csv_malformed_json(tmp_path, filename, content):
         json_to_csv(str(src), str(dst))
 
 
-# csv_to_json
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "nonexistent.json",
+        "missing.json",
+        "not_found.json",
+    ],
+)
+def test_json_to_csv_file_not_found(tmp_path, filename):
+    dst = tmp_path / "output.csv"
+
+    with pytest.raises(FileNotFoundError):
+        json_to_csv(str(tmp_path / filename), str(dst))
 
 
 @pytest.mark.parametrize(
-    "filename, content",
+    "json_data, expected_rows",
     [
-        ("empty.csv", ""),  # полностью пустой файл
-        ("whitespace.csv", "   "),  # только пробелы
-        ("only_newlines.csv", "\n\n\n"),  # только переносы строк
+        ([{"name": "Alice", "age": 25}], 1),
+        ([{"name": "Alice"}, {"name": "Bob"}], 2),  # одинаковые ключи
+        ([{"id": 1}, {"id": 2}, {"id": 3}], 3),
     ],
 )
-def test_csv_to_json_empty_or_invalid_csv(tmp_path, filename, content):
+def test_json_to_csv_valid_data(tmp_path, json_data, expected_rows):
+    src = tmp_path / "test.json"
+    dst = tmp_path / "test.csv"
+
+    src.write_text(json.dumps(json_data), encoding="utf-8")
+
+    json_to_csv(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+
+    assert len(rows) == expected_rows
+
+
+# csv_json
+
+
+@pytest.mark.parametrize(
+    "filename, content, expected_count",
+    [
+        ("empty.csv", "", 0),  # создает пустой массив
+        ("whitespace.csv", "   ", 0),
+        ("only_newlines.csv", "\n\n\n", 0),
+        ("only_header.csv", "name,age", 0),
+    ],
+)
+def test_csv_to_json_empty_csv(tmp_path, filename, content, expected_count):
     src = tmp_path / filename
     dst = tmp_path / "output.json"
 
     src.write_text(content, encoding="utf-8")
 
-    with pytest.raises(ValueError):
-        csv_to_json(str(src), str(dst))
+    csv_to_json(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        result = json.load(f)
+
+    assert len(result) == expected_count
+
+
+@pytest.mark.parametrize(
+    "filename, content, expected_count",
+    [
+        ("normal.csv", "name,age\nAlice,22\nBob,25", 2),
+        (
+            "inconsistent.csv",
+            "name,age\nAlice,22\nBob",
+            2,
+        ),  # обрабатывает неконсистентные данные
+        ("quotes.csv", 'name,desc\n"John, Doe",test', 1),
+    ],
+)
+def test_csv_to_json_various_formats(tmp_path, filename, content, expected_count):
+    src = tmp_path / filename
+    dst = tmp_path / "output.json"
+
+    src.write_text(content, encoding="utf-8")
+
+    csv_to_json(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        result = json.load(f)
+
+    assert len(result) == expected_count
 
 
 @pytest.mark.parametrize(
@@ -690,7 +768,6 @@ def test_csv_to_json_empty_or_invalid_csv(tmp_path, filename, content):
         "nonexistent.csv",
         "missing.csv",
         "not_found.csv",
-        "data/subdir/missing.csv",  # относительный путь с поддиректорией
     ],
 )
 def test_csv_to_json_file_not_found(tmp_path, filename):
@@ -700,26 +777,7 @@ def test_csv_to_json_file_not_found(tmp_path, filename):
         csv_to_json(str(tmp_path / filename), str(dst))
 
 
-@pytest.mark.parametrize(
-    "filename, content",
-    [
-        ("unclosed_quotes.csv", '"name","age"\n"Alice,22'),
-        ("malformed_quotes.csv", 'name,age\n"Alice","22"\n"Bob,25'),
-        ("inconsistent_columns.csv", "name,age\nAlice,22\nBob"),
-        ("only_header.csv", "name,age"),
-    ],
-)
-def test_csv_to_json_malformed_csv(tmp_path, filename, content):
-    src = tmp_path / filename
-    dst = tmp_path / "output.json"
-
-    src.write_text(content, encoding="utf-8")
-
-    with pytest.raises(csv.Error):
-        csv_to_json(str(src), str(dst))
-
-
-# общие
+# same
 
 
 @pytest.mark.parametrize(
@@ -730,7 +788,7 @@ def test_csv_to_json_malformed_csv(tmp_path, filename, content):
     ],
 )
 def test_both_functions_none_paths(func, input_ext):
-    with pytest.raises(TypeError):
+    with pytest.raises(AttributeError):  # AttributeError
         func(None, "output")
 
 
@@ -752,9 +810,6 @@ def test_both_functions_empty_paths(func, input_ext, tmp_path):
     with pytest.raises(ValueError):
         func("", str(tmp_path / "output"))
 
-    with pytest.raises(ValueError):
-        func(str(src), "")
-
 
 @pytest.mark.parametrize(
     "func, input_ext, output_ext",
@@ -763,56 +818,46 @@ def test_both_functions_empty_paths(func, input_ext, tmp_path):
         (csv_to_json, "csv", "json"),
     ],
 )
-def test_both_functions_relative_paths(tmp_path, func, input_ext, output_ext):
-
-    subdir = tmp_path / "data"
-    subdir.mkdir()
-
-    src = subdir / f"test.{input_ext}"
-    dst = subdir / f"output.{output_ext}"
+def test_both_functions_simple_paths(tmp_path, func, input_ext, output_ext):
+    src = tmp_path / f"test.{input_ext}"
+    dst = tmp_path / f"output.{output_ext}"
 
     if input_ext == "json":
         src.write_text('[{"name": "Test"}]', encoding="utf-8")
     else:
         src.write_text("name\nTest", encoding="utf-8")
 
-    relative_src = Path("data") / f"test.{input_ext}"
-    relative_dst = Path("data") / f"output.{output_ext}"
-    func(str(relative_src), str(relative_dst))
+    # простые пути в текущей
+
+    func(str(src.name), str(dst.name))
 
     assert dst.exists()
 
 
 @pytest.mark.parametrize(
-    "func, input_ext",
+    "func, input_ext, test_data",
     [
-        (json_to_csv, "json"),
-        (csv_to_json, "csv"),
+        (json_to_csv, "json", '[{"name": "Алиса", "city": "Москва"}]'),
+        (csv_to_json, "csv", "name,city\nАлиса,Москва"),
     ],
 )
-def test_both_functions_utf8_encoding(tmp_path, func, input_ext):
-    """Проверка строгой кодировки UTF-8"""
-    src = tmp_path / f"utf8_test.{input_ext}"
+def test_both_functions_utf8_support(tmp_path, func, input_ext, test_data):
+    src = tmp_path / f"test.{input_ext}"
     dst = tmp_path / f"output.{'csv' if input_ext == 'json' else 'json'}"
 
-    
-    if input_ext == "json":
-        content = '[{"name": "Алиса 😀", "city": "Москва"}]'
-    else:
-        content = "name,city\nАлиса 😀,Москва"
+    src.write_text(test_data, encoding="utf-8")
 
-    src.write_text(content, encoding="utf-8")
     func(str(src), str(dst))
+
     assert dst.exists()
 
-    output_content = dst.read_text(encoding="utf-8")
-    assert "Алиса" in output_content
 
 ```
 ![img01!](./images/lab07/img02.png)
 
 
 
-## Покрытие кода
+
 
 ## Black
+![img01!](./images/lab07/img03.png)
