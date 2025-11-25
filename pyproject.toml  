@@ -1,0 +1,52 @@
+# 1. СИСТЕМА СБОРКИ
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+# 2. МЕТАДАННЫЕ ПРОЕКТА
+[project]
+name = "python-labs"
+version = "0.1.0"
+description = "Сборник учебных лабораторных работ по Python"
+readme = "README.md"
+requires-python = ">=3.11"
+
+# 3. ЗАВИСИМОСТИ
+# runtime
+dependencies = [
+  "openpyxl==3.1.5",
+]
+
+# opcional
+[project.optional-dependencies]
+dev = [
+  "pytest==9.0.1",
+  "pytest-cov==7.0.0",
+  "black==25.11.0",
+]
+
+# Настройки Pytest
+[tool.pytest.ini_options]
+pythonpath = [
+    ".", "src"
+]
+addopts = "-q --cov=src --cov-report=term-missing"
+testpaths = ["tests"]
+
+# Настройки Black
+[tool.black]
+line-length = 88  
+target-version = ["py311"]
+extend-exclude = '''
+(
+  ^\.(venv|env)/|
+  ^data/|
+  ^images/
+)
+'''
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
