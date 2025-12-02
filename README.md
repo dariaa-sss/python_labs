@@ -852,6 +852,28 @@ def test_both_functions_utf8_support(tmp_path, func, input_ext, test_data):
     assert dst.exists()
 
 
+def test_json_to_csv_wrong_csv_extension(tmp_path):
+    src = tmp_path / "test.json"
+    dst = tmp_path / "output.txt"
+
+    src.write_text('[{"name": "Test"}]', encoding="utf-8")
+
+    with pytest.raises(ValueError, match="ValueError"):
+        json_to_csv(str(src), str(dst))
+
+
+def test_csv_to_json_wrong_csv_extension(tmp_path):
+
+    src = tmp_path / "test.txt"
+    dst = tmp_path / "output.json"
+
+    src.write_text("name,age\nAlice,25", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="ValueError"):
+        csv_to_json(str(src), str(dst))
+
+
+
 ```
 ![img01!](./images/lab07/img02.png)
 
@@ -861,3 +883,182 @@ def test_both_functions_utf8_support(tmp_path, func, input_ext, test_data):
 
 ## Black
 ![img01!](./images/lab07/img03.png)
+
+# Лабораторная работа 8
+## Цель работы
+Изучить основы объектно-ориентированного программирования в Python, научиться описывать модели данных при помощи @dataclass, реализовывать методы экземпляра класса, валидацию данных, а также сериализацию и десериализацию объектов в формате JSON.
+
+1. Python поддерживает ООП: классы определяют структуру и поведение объектов.
+Пример:
+class A:
+    def hello(self):
+        return "hi"
+2.  Инкапсуляция
+Python использует соглашения:
+_field — защищённое поле (protected)
+__field — приватное поле (private, name mangling)
+1.3 @dataclass
+@dataclass автоматически генерирует:
+__init__
+__repr__
+__eq__
+(опционально) методы сравнения, если order=True
+Пример:
+from dataclasses import dataclass
+
+@dataclass
+class Point:
+    x: int
+    y: int
+1.4 Сериализация
+Объект → словарь → JSON:
+import json
+json.dumps({"a": 1})
+## Задание A
+Требуется реализовать:
+models.py — класс Student
+Поля
+Поле	Тип	Описание
+fio	str	ФИО студента
+birthdate	str	Дата рождения (YYYY-MM-DD)
+group	str	Группа, например SE-01
+gpa	float	Средний балл (0…5)
+Методы:
+age() — вычисляет количество полных лет
+to_dict() — сериализация в словарь
+from_dict() — десериализация из словаря
+__str__() — красивый текстовый вывод
+Валидация в __post_init__:
+корректный формат даты (YYYY-MM-DD)
+диапазон среднего балла: 0 ≤ gpa ≤ 5
+дата рождения не может быть будущей
+B) serialize.py — функции сериализации
+students_to_json(students, path)
+Принимает список объектов Student
+Проверяет расширение файла
+Сохраняет JSON в указанный путь
+students_from_json(path)
+Читает и валидирует JSON
+Создаёт и возвращает список Student
+```python
+from dataclasses import dataclass
+from datetime import datetime, date
+
+
+@dataclass
+class Student:  
+    fio: str
+    birthdate: str
+    group: str
+    gpa: float
+    
+    def __post_init__(self):
+        try:
+            datetime.strptime(self.birthdate, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError(f"Некорректный формат даты: {self.birthdate}. "
+                           f"Используйте формат YYYY-MM-DD")
+        
+        if not (0 <= self.gpa <= 5):
+            raise ValueError(f"Средний балл должен быть в диапазоне 0-5, получено: {self.gpa}")
+        birth_date = datetime.strptime(self.birthdate, "%Y-%m-%d").date()
+        if birth_date > date.today():
+            raise ValueError("Дата рождения не может быть в будущем")
+    
+    def age(self) -> int:
+        birth_date = datetime.strptime(self.birthdate, "%Y-%m-%d").date()
+        today = date.today()
+        
+        age = today.year - birth_date.year
+        if (today.month, today.day) < (birth_date.month, birth_date.day):
+            age -= 1
+            
+        return age
+    
+    def to_dict(self) -> dict:
+        return {
+            "fio": self.fio,
+            "birthdate": self.birthdate,
+            "group": self.group,
+            "gpa": round(self.gpa, 2)
+        }
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Student':
+        required_fields = ['fio', 'birthdate', 'group', 'gpa']
+        for field in required_fields:
+            if field not in data:
+                raise ValueError(f"Отсутствует обязательное поле: {field}")
+        try:
+            gpa = float(data['gpa'])
+        except (ValueError, TypeError):
+            raise ValueError(f"Некорректное значение GPA: {data['gpa']}")
+        
+        return cls(
+            fio=str(data['fio']),
+            birthdate=str(data['birthdate']),
+            group=str(data['group']),
+            gpa=gpa
+        )
+    
+    def __str__(self) -> str:
+        age = self.age()
+        return (f"Студент: {self.fio}\n"
+                f"Возраст: {age} лет\n"
+                f"Группа: {self.group}\n"
+                f"Средний балл: {self.gpa:.2f}")        
+```
+## Задание Б
+```python
+import json
+from pathlib import Path
+from typing import List
+from src.lab08.models import Student
+
+def students_to_json(students: List[Student], path: str) -> None:
+    path_obj = Path(path)
+    if not path_obj.lower().endswith(".json"):
+        raise ValueError("ValueError")
+    path_obj.parent.mkdir(parents=True, exist_ok=True)
+    data = [student.to_dict() for student in students]
+    with open(path_obj, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def students_from_json(path: str) -> List[Student]:
+    path_obj = Path(path)
+    if not path_obj.lower().endswith(".json"):
+        raise ValueError("ValueError")
+    if not path_obj.exists():
+        raise FileNotFoundError(f"Файл не найден")
+    with open(path_obj, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    if not isinstance(data, list):
+        raise ValueError("ValueError")
+    
+    students = []
+    for i, item in enumerate(data):
+        try:
+            student = Student.from_dict(item)
+            students.append(student)
+        except (ValueError, KeyError) as e:
+            print(f"{e}")
+            raise
+    return students
+
+if __name__ == "__main__":
+    input_path = '/Users/dariella/Desktop/python_labs/data/lab08/students_input.json'
+    output_path = '/Users/dariella/Desktop/python_labs/data/lab08/students_output.json' 
+    try:
+        students = students_from_json(input_path)
+        students_to_json(students, output_path)
+    except Exception as e:
+        print(f"{e}")
+
+```
+4. Примеры
+Пример входного JSON (students_input.json)
+![img01!](./images/lab08/img01.png)
+
+Пример выходного JSON (students_output.json)
+![img01!](./images/lab08/img02.png)
+![img01!](./images/lab08/img03.png)

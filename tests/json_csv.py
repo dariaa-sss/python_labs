@@ -224,3 +224,24 @@ def test_both_functions_utf8_support(tmp_path, func, input_ext, test_data):
     func(str(src), str(dst))
 
     assert dst.exists()
+
+
+def test_json_to_csv_wrong_csv_extension(tmp_path):
+    src = tmp_path / "test.json"
+    dst = tmp_path / "output.txt"
+
+    src.write_text('[{"name": "Test"}]', encoding="utf-8")
+
+    with pytest.raises(ValueError, match="ValueError"):
+        json_to_csv(str(src), str(dst))
+
+
+def test_csv_to_json_wrong_csv_extension(tmp_path):
+
+    src = tmp_path / "test.txt"
+    dst = tmp_path / "output.json"
+
+    src.write_text("name,age\nAlice,25", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="ValueError"):
+        csv_to_json(str(src), str(dst))
