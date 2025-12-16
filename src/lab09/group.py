@@ -29,6 +29,7 @@ class Group:
         self.path = Path(storage_path)
         if not self.path.exists():
             with self.path.open("w", encoding="utf-8", newline="") as f:
+                self.path.parent.mkdir(parents=True, exist_ok=True)
                 writer = csv.writer(f)
                 writer.writerow(["fio", "birthdate", "group", "gpa"]) 
 
@@ -59,10 +60,9 @@ class Group:
         return self._read_all()
     
     def add(self, student: Student):
+        validate_date(student.birthdate)
         if not isinstance(student, Student):
             raise TypeError("add() принимает только объект класса Student")
-
-        validate_date(student.birthdate)
         gpa = validate_gpa(student.gpa)
         students = self._read_all()
         for s in students:
